@@ -1,16 +1,44 @@
-# chezmoi
+##########
+# System #
+##########
+alias shutdown="sudo shutdown now"
+alias restart="sudo reboot"
+
+###########
+# chezmoi #
+###########
 alias cm="chezmoi"
 
-# ls
-alias ls="ls --color=auto"
-alias ll="ls -l"
-alias la="ls -a"
+#######
+# git #
+#######
+alias gs="git status"
+alias ga="git add"
+alias gb="git branch"
+alias gc="git commit -m"
+alias gco="git checkout"
+alias gpl="git pull"
+alias gps="git push"
 
-# keepassxc
+#############
+# keepassxc #
+#############
 alias kp="keepassxc-cli"
 alias kpdb={{ .keepassxc.database }}
 
-# ssh
+######
+# ls #
+######
+alias ls="ls --color=auto"
+alias l="ls -l"
+alias ll="ls -lahF"
+alias lls="ls -lahFtr"
+alias la="ls -a"
+alias lc="ls -CF"
+
+#######
+# ssh #
+#######
 # Workaround for using XDG_CONFIG_HOME
 if [ -s "${XDG_CONFIG_HOME}/ssh/config" ]; then
     SSH_CONFIG="-F ${XDG_CONFIG_HOME}/ssh/config"
@@ -21,6 +49,8 @@ fi
 
 alias ssh="ssh ${SSH_CONFIG} ${SSH_ID}"
 
-# wget
+########
+# wget #
+########
 # Alias to use a custom history file location
 alias wget="wget --hsts-file=${XDG_DATA_HOME}/wget/hsts"
