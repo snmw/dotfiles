@@ -1,0 +1,26 @@
+# chezmoi
+alias cm="chezmoi"
+
+# ls
+alias ls="ls --color=auto"
+alias ll="ls -l"
+alias la="ls -a"
+
+# keepassxc
+alias kp="keepassxc-cli"
+alias kpdb={{ .keepassxc.database }}
+
+# ssh
+# Workaround for using XDG_CONFIG_HOME
+if [ -s "${XDG_CONFIG_HOME}/ssh/config" ]; then
+    SSH_CONFIG="-F ${XDG_CONFIG_HOME}/ssh/config"
+fi
+if [ -s "${XDG_CONFIG_HOME}/ssh/id_ed25519" ]; then
+    SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_ed25519"
+fi
+
+alias ssh="ssh ${SSH_CONFIG} ${SSH_ID}"
+
+# wget
+# Alias to use a custom history file location
+alias wget="wget --hsts-file=${XDG_DATA_HOME}/wget/hsts"

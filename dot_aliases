@@ -1,4 +1,0 @@
-alias kp="keepassxc-cli"
-alias cm="chezmoi"
-alias kpdb="/Users/snwolf/Dropbox/.keepass/personal_passwords.kdbx"
-alias code="codium"
