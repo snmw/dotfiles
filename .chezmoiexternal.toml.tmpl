@@ -6,10 +6,20 @@
 {{-     $fontDir = "~/Library/Fonts" }}
 {{-   else if eq .chezmoi.os "linux" }}
 {{-     $xdgDataHome := env "XDG_DATA_HOME" -}}
-{{-     if not $xdgDataHome -}}
+{{- /*  Use XDG_DATA_HOME only if it's within home directory, otherwise use default */ -}}
+{{-     if $xdgDataHome -}}
+{{-         if not (hasPrefix $xdgDataHome .chezmoi.homeDir) -}}
+{{- /*          XDG_DATA_HOME is outside home, use default location for chezmoi external */ -}}
+{{-             $xdgDataHome = printf "%s/.local/share" .chezmoi.homeDir -}}
+{{-         end -}}
+{{-     else -}}
 {{-         $xdgDataHome = printf "%s/.local/share" .chezmoi.homeDir -}}
 {{-     end -}}
-{{-     $fontDir = printf "%s/fonts/truetype" $xdgDataHome -}}
+{{- /*  Convert to ~ notation relative to home directory */ -}}
+{{-     $fontPath := printf "%s/fonts/truetype" $xdgDataHome -}}
+{{-     $relativePath := trimPrefix .chezmoi.homeDir $fontPath -}}
+{{- /*  Remove leading slash if present and prepend ~ */ -}}
+{{-     $fontDir = printf "~%s" (trimPrefix "/" $relativePath) -}}
 {{-   end }}
 
 ["{{ $fontDir }}/Sauce Code Pro Mono Regular.ttf"]
