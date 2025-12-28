@@ -1,10 +1,12 @@
-{{/* Boolean feature tags that may be useful in the future */}}
+# .chezmoi.toml.tmpl
+
+{{/* Boolean feature tags that may be useful in the future */ -}}
 {{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
 {{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g., a cloud or VM instance */}}
 {{- $work := false -}}{{/* true if this machine should have work secrets from KeePassXC */}}
 {{- $personal := false -}}{{/* true if this machine should have personal secrets from KeePassXC */}}
 
-{{/* Prompt user for their email */}}
+{{- /* Prompt user for their email */ -}}
 {{- $email := "" -}}
 {{- if (hasKey . "email") -}}
 {{-     $email = .email -}}
@@ -12,7 +14,21 @@
 {{-     $email = promptString "email" -}}
 {{- end }}
 
-{{/* Work around unreliable hostname on darwin */}}
+{{- /* Prompt user for whether KeePassXC should be used */ -}}
+{{- $useKeepassxc := false -}}
+{{- if (hasKey . "useKeepassxc") -}}
+{{-     $useKeepassxc = .useKeepassxc -}}
+{{- else -}}
+{{-     $useKeepassxc = promptBool "useKeepassxc" -}}
+{{- end }}
+
+{{- /* Determine operating system ID for linux */ -}}
+{{- $osid := .chezmoi.os -}}
+{{- if hasKey .chezmoi.osRelease "id" -}}
+{{-   $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
+
+{{- /* Work around unreliable hostname on darwin */ -}}
 {{- $hostname := .chezmoi.hostname -}}
 {{- if eq .chezmoi.os "darwin" -}}
 {{-     $computerName := output "scutil" "--get" "ComputerName" | trim -}}
@@ -25,11 +41,12 @@
 {{-     end -}}
 {{- end -}}
 
-{{- if eq $hostname "snwolf-mbp" -}}
+{{- if eq $hostname "framework" -}}
 {{-     $personal = true -}}
 {{- else if eq $hostname "work-mbp" -}}
 {{-     $work = true -}}
 {{- end -}}
+
 
 [data]
     email = {{ $email | quote }}
@@ -37,11 +54,42 @@
     work = {{ $work }}
     headless = {{ $headless }}
     ephemeral = {{ $ephemeral }}
+    osid = {{ $osid | quote }}
+    signingkey = "6F6A80526F523B89"
+
+{{- /* Determine appropriate command for KeePassXC CLI */ -}}
+{{- $keepassxcCommand := "" -}}
+{{- if $useKeepassxc -}}
+{{-     if lookPath "keepassxc-cli" -}}
+{{-         $keepassxcCommand = "keepassxc-cli" -}}
+{{-     else if contains "org.keepassxc.KeePassXC" (output "flatpak" "list" "--columns" "application") -}}
+{{-         $keepassxcCommand = "/usr/bin/env flatpak run --branch=stable --arch=$(uname -m) --command=keepassxc-cli org.keepassxc.KeePassXC" -}}
+{{-     else -}}
+{{-         warnf "KeePassXC CLI not found, please install it to use KeePassXC" -}}
+{{-         $useKeepassxc = false -}}
+{{-     end -}}
+{{- end }}
+    useKeepassxc = {{ $useKeepassxc }}
+
+{{ if $useKeepassxc -}}
+{{- /*  Get XDG_DATA_HOME with fallback to default */ -}}
+{{-     $xdgDataHome := env "XDG_DATA_HOME" -}}
+{{-     if not $xdgDataHome -}}
+{{-         $xdgDataHome = printf "%s/.local/share" .chezmoi.homeDir -}}
+{{-     end -}}
+{{-     $defaultDatabase := printf "%s/keepassxc/passwords.kdbx" $xdgDataHome -}}
+{{-     $keepassxcDatabases := dict "personal" "/Users/snwolf/Dropbox/.keepass/personal.kdbx" "work" $defaultDatabase -}}
+{{- /*  Determine which database to use based on flags */ -}}
+{{-     $activeDatabase := $defaultDatabase -}}
+{{-     if $personal -}}
+{{-         $activeDatabase = index $keepassxcDatabases "personal" -}}
+{{-     else if $work -}}
+{{-         $activeDatabase = index $keepassxcDatabases "work" -}}
+{{-     end -}}
+
 [keepassxc]
-    command = "keepassxc-cli"
-{{ if $personal -}}
-    database = "/Users/snwolf/Dropbox/.keepass/personal_passwords.kdbx"
-{{- end }}
-{{ if $work -}}
-    database = "/Users/simwolf/OneDrive/.keepass/paypal_passwords.kdbx"
-{{- end }}
+    database = {{ $activeDatabase | quote }}
+    command = {{ $keepassxcCommand | quote }}
+    args = ["--yubikey" "2"]
+    mode = "open"
+{{- end}}
