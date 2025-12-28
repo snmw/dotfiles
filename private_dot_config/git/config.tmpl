@@ -1,0 +1,25 @@
+[user]
+	name = "Simon Mitchell-Wolf"
+	email = {{ .email | quote }}
+{{ if .signingkey -}}
+    signingkey = {{ .signingkey }}
+{{- end }}
+[color]
+	ui = true
+[core]
+	editor = nvim
+	autocrlf = input
+[init]
+	defaultbranch = main
+{{- if .personal }}
+[gpg]
+    program = /usr/local/bin/gpg
+{{ end -}}
+{{- if .signingkey }}
+[commit]
+    gpgsign = true
+{{ end -}}
+[pull]
+	rebase = false
+[alias]
+	fpush = push --force-with-lease
