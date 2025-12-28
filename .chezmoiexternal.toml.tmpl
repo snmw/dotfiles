@@ -1,3 +1,5 @@
+# .chezmoiexternal.toml.tmpl
+
 {{- if and (not .ephemeral) (not .headless) }}
 {{-   $fontDir := "" }}
 {{-   if eq .chezmoi.os "darwin" }}
