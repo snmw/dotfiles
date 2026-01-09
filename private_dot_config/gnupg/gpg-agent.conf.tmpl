@@ -1,0 +1,27 @@
+# GPG Agent configuration
+# This file should be symlinked or copied to ${GNUPGHOME}/gpg-agent.conf
+# GNUPGHOME is typically ${XDG_DATA_HOME}/gnupg
+
+# TODO: Fix this for Linux and macOS
+# Pinentry program configuration
+# Try GUI pinentry first, fallback to loopback mode for non-interactive environments
+{{ if eq .chezmoi.os "linux" -}}
+# For Linux, prefer GUI pinentry programs
+# Try pinentry-gnome3 first (common on GNOME/Fedora), then pinentry-gtk, then loopback
+# pinentry-program /usr/bin/pinentry-gnome3
+pinentry-program {{ env "BREW_PREFIX" }}/bin/pinentry
+{{- else if eq .chezmoi.os "darwin" -}}
+# For macOS, use pinentry-mac
+pinentry-program /usr/local/bin/pinentry-mac
+{{- end }}
+
+# Enable loopback mode for non-interactive environments (like IDEs)
+# This allows gpg-agent to prompt for passphrase via stdin when GUI pinentry isn't available
+allow-loopback-pinentry
+
+# Cache passphrase for 1 hour (3600 seconds)
+default-cache-ttl 3600
+max-cache-ttl 3600
+
+# Enable SSH agent support (optional, but useful)
+enable-ssh-support
