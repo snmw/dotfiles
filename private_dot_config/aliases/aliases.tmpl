@@ -4,6 +4,11 @@
 alias shutdown="sudo shutdown now"
 alias restart="sudo reboot"
 
+######
+# cp #
+######
+alias cp="cp -iv"
+
 #######
 # cat #
 #######
@@ -25,8 +30,10 @@ alias ga="git add"
 alias gb="git branch"
 alias gc="git commit -m"
 alias gco="git checkout"
+alias gcb="git checkout -b"
 alias gpl="git pull"
 alias gps="git push"
+alias gfp="git fetch --prune"
 
 ########
 # grep #
@@ -40,6 +47,11 @@ if [ "$(command -v ug)" ]; then
     alias xzegrep='ug -zE'
     alias xzfgrep='ug -zF'
 fi
+
+############
+# homebrew #
+############
+alias bubu="brew update && brew upgrade --greedy"
 
 #############
 # keepassxc #
@@ -70,6 +82,16 @@ if [ "$(command -v eza)" ]; then
     alias l.='eza -d .*'
     alias l1='eza -1'
 fi
+
+######
+# mv #
+######
+alias mv="mv -iv"
+
+######
+# rm #
+######
+alias rm="rm -iv"
 
 #######
 # ssh #
