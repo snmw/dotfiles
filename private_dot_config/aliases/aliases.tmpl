@@ -45,11 +45,11 @@ fi
 # keepassxc #
 #############
 {{/* If KeepassXC is installed via Flatpak, the CLI is not exposed on the system path */}}
-{{- if eq .chezmoi.os "linux" -}}
+{{ if eq .chezmoi.os "linux" -}}
 if flatpak list --columns=application | grep -q "org.keepassxc.KeePassXC"; then
     alias keepassxc-cli="/usr/bin/env flatpak run --branch=stable --arch=$(uname -m) --command=keepassxc-cli org.keepassxc.KeePassXC"
 fi
-{{- end -}}
+{{- end }}
 alias kp="keepassxc-cli"
 alias kpdb="keepassxc-cli ${KP_DB}"
 
