@@ -1,3 +1,39 @@
+HashKnownHosts yes
+
 Host *
-	IdentityFile {{ .chezmoi.homeDir }}/.config/ssh/id_ed25519
-	UserKnownHostsFile {{ .chezmoi.homeDir }}/.config/ssh/known_hosts
+{{- /* Use KeepassXC to load keys into SSH agent */ -}}
+{{- if not .useKeepassxc }}
+    IdentityFile {{ .chezmoi.homeDir }}/.config/ssh/id_ed25519
+{{- end }}
+    UserKnownHostsFile {{ .chezmoi.homeDir }}/.config/ssh/known_hosts
+
+{{- /* Dynamically load SSH hosts configuration from KeePassXC JSON */ -}}
+{{- if .useKeepassxc -}}
+
+{{- $sshConfigAttachment := "hosts" -}}
+{{-   if .personal -}}
+{{-     $sshConfigAttachment = "hosts-personal" -}}
+{{-   else if .work -}}
+{{-     $sshConfigAttachment = "hosts-work" -}}
+{{-   end -}}
+
+{{-   $sshConfigJson := keepassxcAttachment "SSH Config" $sshConfigAttachment | default "" | trim -}}
+{{-   if $sshConfigJson -}}
+{{-     $config := fromJson $sshConfigJson -}}
+{{-     if $config.hosts -}}
+{{-       range $host := $config.hosts -}}
+{{-         if $host.Host }}
+
+Host {{ $host.Host }}
+{{- /*        Iterate over all keys in the host object dynamically */ -}}
+{{-           range $key, $value := $host -}}
+{{- /*          Skip 'Host' as it's used for the Host line */ -}}
+{{-             if and (ne $key "Host") $value }}
+    {{ $key }} {{ $value }}
+{{-             end -}}
+{{-           end -}}
+{{-         end -}}
+{{-       end -}}
+{{-     end -}}
+{{-   end -}}
+{{- end }}
