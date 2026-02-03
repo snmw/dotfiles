@@ -25,9 +25,10 @@ alias cm="chezmoi"
 #######
 # git #
 #######
-alias gs="git status"
+alias gs="git status --short"
 alias ga="git add"
 alias gb="git branch"
+alias gl='git log --graph --all --pretty=format:"%C(magenta)%h %C(white) %an  %ar%C(auto)  %D%n%s%n"'
 alias gc="git commit -m"
 alias gco="git checkout"
 alias gcb="git checkout -b"

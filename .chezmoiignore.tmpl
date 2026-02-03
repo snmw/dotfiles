@@ -1,5 +1,8 @@
 README.md
 todo/
+
+.zcompdump
+
 {{/* macOS-specific files */ -}}
 {{- if ne .chezmoi.os "darwin" -}}
 .custom-icons
@@ -13,8 +16,12 @@ Library/
 .config/Cursor/User/
 {{- end }}
 
-.zcompdump
 {{/* Externally modified files */ -}}
 {{- /* All files in .cursor are managed by Cursor */ -}}
 .cursor/
 .config/ssh/known_hosts
+
+{{/* Work-specific files */ -}}
+{{- if not .work -}}
+.config/git/config-*
+{{- end }}
