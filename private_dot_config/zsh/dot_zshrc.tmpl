@@ -97,6 +97,9 @@ export GOKU_EDN_CONFIG_FILE="${XDG_CONFIG_HOME}/karabiner/karabiner.edn"
 export GCP_PROJECT_CREDENTIALS_PATH="${XDG_CONFIG_HOME}/gcloud/credentials"
 
 # java
+## Setup SDKMAN for Java
+export SDKMAN_DIR="$(brew --prefix sdkman-cli)/libexec"
+# This is for something else...
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="${XDG_CONFIG_HOME}/java"
 
 # keepassxc
@@ -212,6 +215,11 @@ source "${XDG_CONFIG_HOME}/aliases/aliases"
 # iterm2
 [ -e "${XDG_CONFIG_HOME}/iterm2/iterm2_shell_integration.zsh" ] && source "${XDG_CONFIG_HOME}/iterm2/iterm2_shell_integration.zsh"
 {{- end -}}
+{{ if .work -}}
+# SDKMAN for Java
+[[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
+{{- end -}}
+
 
 # zoxide
 [ "$(command -v zoxide)" ] && eval "$(zoxide init --cmd cd zsh)"
