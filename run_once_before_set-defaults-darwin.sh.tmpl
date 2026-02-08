@@ -63,6 +63,7 @@ then
     scshdir="~/Dropbox/photos/screenshots"
 else
     scshdir="~/Desktop"
+fi
 defaults write com.apple.screencapture location $scshdir
 
 # Save screenshots in given format
@@ -268,4 +269,4 @@ killall SystemUIServer
 
 echo "You will likely have restart for all changes to take effect."
 
-{{- end }}
+{{- end -}}
