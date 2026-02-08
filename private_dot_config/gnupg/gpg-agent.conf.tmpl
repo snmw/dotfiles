@@ -4,8 +4,7 @@
 
 # Pinentry program configuration
 # Try GUI pinentry first, fallback to loopback mode for non-interactive environments
-pinentry-program /usr/bin/pinentry-gnome3
-{{- if lookPath "brew" -}}
+{{ if lookPath "brew" -}}
 {{-     if eq .chezmoi.os "darwin" -}}
 pinentry-program {{ env "HOMEBREW_PREFIX" }}/bin/pinentry-mac
 {{-     else -}}
