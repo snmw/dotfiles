@@ -90,6 +90,6 @@
 [keepassxc]
     database = {{ $activeDatabase | quote }}
     command = {{ $keepassxcCommand | quote }}
-    args = ["--yubikey" "2"]
+    args = ["--yubikey", "2"]
     mode = "open"
 {{- end}}
