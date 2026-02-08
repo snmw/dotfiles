@@ -12,5 +12,6 @@
     "latex-workshop.view.pdf.viewer": "tab",
     "editor.detectIndentation": false,
     "editor.cursorBlinking": "smooth",
-    "keyboard.touchbar.enabled": false
+    "keyboard.touchbar.enabled": false,
+    "python.languageServer": "Pylance"
 }
