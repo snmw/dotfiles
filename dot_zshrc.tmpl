@@ -78,20 +78,28 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
+########################
+## User configuration ##
+########################
 
-# export MANPATH="/usr/local/man:$MANPATH"
-
+# General env settings
+export MANPATH="/usr/local/man:$MANPATH"
 export EDITOR=vim
 export LANG=en_US.UTF-8
-GPG_TTY=$(tty)
-export GPG_TTY
+GPG_TTY="$(tty)" && export GPG_TTY
+
+# Dracula Theme config
+export DRACULA_DISPLAY_CONTEXT=1
+export DRACULA_ARROW_ICON=""
+export ZSH_THEME_GIT_PROMPT_CLEAN=") %F{green}%B "
+export ZSH_THEME_GIT_PROMPT_DIRTY=") %F{yellow}%B "
+export ZSH_THEME_GIT_PROMPT_PREFIX="%F{cyan}%B( "
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
 # iTerm2 cmd integration
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+[ -e "${HOME}/.iterm2_shell_integration.zsh" ] && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # pyenv setup
 eval "$(pyenv init -)"
