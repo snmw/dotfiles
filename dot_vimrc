@@ -1,3 +1,22 @@
+" Make sure compatibility is off
+if &compatible
+  set nocompatible
+endif
+silent! while 0
+  set nocompatible
+silent! endwhile
+
+set modifiable
+set fileformat=unix
+set encoding=UTF-8
+set hidden          " TextEdit might fail if hidden is not set
+set shortmess+=c
+
+
+"""""""""""""
+"" PLUGINS ""
+"""""""""""""
+
 " Install vim-plug if not found
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -9,28 +28,166 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
   \| PlugInstall --sync | source ~/.vimrc
 \| endif
 
-" Plugins
-call plug#begin('~/.vim/plugged')
 
-Plug 'dracula/vim', { 'as': 'dracula' }
+""""""""""""""
+"" BEHAVIOR ""
+""""""""""""""
+" Allow backspacing over everything in insert mode
+set backspace=indent,eol,start 
 
-call plug#end()
+" set noerrorbells visual bell t_vb=  " Uncomment to remove error indicators
+
+" MOUSE SETTINGS
+if has('mouse')
+  if &term =~ 'xterm'
+    set mouse=a
+  else
+    set mouse=nvi
+  endif
+endif
+
+" Only do this if Vim compiled with +eval
+if 1
+  " Enable file type detection
+  filetype plugin indent on
+
+  " autocmd group can be reverted with:
+  " ": augroup vimStartup | au! | augroup END"
+  augroup vimStartup
+    au!
+
+    " Always jumpt back to last known cursor position
+    " unless the position is invalid, inside an event handler,
+    " or for a commit message.
+    autocmd BufReadPost *
+      \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+      \ |   exe "normal! g`\""
+      \ | endif
+    
+  augroup END
+
+endif
+
+""""""""""""""""
+"" FORMATTING ""
+""""""""""""""""
+
+" Switch syntax highlighting on when the terminal has colors or when using the
+" GUI (which always has colors).
+if &t_Co > 2 || has("gui_running")
+  " Revert with ":syntax off".
+  syntax on
+  
+  " Uncomment below to hightlight strings inside C comments.
+  let c_comments_strings=1
+endif
 
 
-set number
-set tabstop=4
-set expandtab		"Use softtabstop spaces instead of tab characters for indentation
-set shiftwidth=4	"Indent by 4 spaces whne using >>, <<, ==, etc.
-set softtabstop=4	"Indent by 4 spaces when pressing <TAB>
+" LINES AND INDENTATION
+" TODO: Deprecate in favor of EditorConfig plugin
+set nowrap
+set scrolloff=4   " Scroll x lines before cursor hits bottom
 
-set autoindent		"Keep indentation from previous line
-set smartindent		"Automatically inserts indentation in some cases
-set cindent		    "Like smartindent, but stricter and more customizable
+    " Python-specific
+au BufNewFile,BufRead *.py
+  \ set tabstop=4 |
+  \ set softtabstop=4 |
+  \ set shiftwidth=4 |
+  \ set textwidth=79 |
 
-set mouse=a
+    " Global
+set tabstop=2
+set softtabstop=2	" Indent by 4 spaces when pressing <TAB>
+set shiftwidth=2	" Indent by 4 spaces whne using >>, <<, ==, etc.
+set autoindent		" Keep indentation from previous line
+set smartindent		" Automatically inserts indentation in some cases
+set smarttab      " Automatically inserts indentation in some cases
+set expandtab		  " Use softtabstop spaces instead of tab characters for indentation
+set cindent		    " Like smartindent, but stricter and more customizable
 
-syntax on
-colorscheme dracula
 
+" VISIBILITY
+set number          " Show line column
+set relativenumber  " Relative line numbering
+if has("nvim-0.5.0") || has("patch-8.1.1564")
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
+
+set cursorline      " Highlight full active line
+
+set showcmd         " Shows current typed command at bottom right
+set cmdheight       " More space for messages
+set noshowmode      " Airline plugin handles mode indicator
+set conceallevel=1  " Used to conceal some keywords as symbols
+
+set wildmenu        " Display completion matches in a status line
+
+set list            " Show invisible characters defined below
+set listchars=eol:.,tab:>-,trail:~,extends:>,precedes:<
+
+
+"""""""""""""
+"" CACHING ""
+"""""""""""""
+set noswapfile    " swapfile and backup set off in favor of undo logging
+set nobackup
+set undodir=~/.vim/undodir
+set undofile
+
+set clipboard=unnamed   " Uses system clipboard for yy, etc.
+
+
+""""""""""""
+"" SEARCH ""
+""""""""""""
+set ignorecase
+set smartcase   " Only case match if pattern contains uppercase char
+set incsearch   " Incomplete pattern search
+
+if &t_Co > 2 || has("gui_running")
+  " Simultaneously highlight all search results (if in color terminal or GUI)
+  set hlsearch
+  nnoremap <CR> :noh<CR><CR>:<backspace>  " Get rid of highlighting
+endif
+
+
+""""""""""""""""""
+"" PROGRAMMATIC ""
+""""""""""""""""""
 " Run `chezmoi apply` whenever a dotfile is saved.
 autocmd BufWritePost ~/.local/share/chezmoi/* ! chezmoi apply --source-path "%"
+
+
+""""""""""""""
+"" COMMANDS ""
+""""""""""""""
+" Shows changes made since save
+if !exists(":DiffOrig")
+  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+                  \ | wincmd p | diffthis
+endif
+
+
+""""""""""""""
+"" SOURCING ""
+""""""""""""""
+so ~/.vim/plugins.vim
+so ~/.vim/plugin-config.vim
+so ~/.vim/autoclose.vim
+
+
+"""""""""""""""""""
+"" COLOR & THEME ""
+"""""""""""""""""""
+" TODO: Really should check for a truecolor terminal programmatically
+set termguicolors
+colorscheme dracula
+hi Normal guibg=NONE ctermbg=NONE   " Removes background in favor of terminal's
+let g:terminal_ansi_colors = [
+  \ '#21222C', '#FF5555', '#50FA7B', '#F1FA8C',
+  \ '#BD93F9', '#FF79C6', '#8BE9FD', '#F8F8F2',
+  \ '#6272A4', '#FF6E6E', '#69FF94', '#FFFFA5',
+  \ '#D6ACFF', '#FF92DF', '#A4FFFF', '#FFFFFF'
+\]

@@ -10,6 +10,7 @@
     "editor.formatOnSaveMode": "modificationsIfAvailable",
     "editor.detectIndentation": false,
     "editor.cursorBlinking": "smooth",
+    "editor.formatOnSave": true,
     "keyboard.touchbar.enabled": false,
     "[python]": {
         "editor.defaultFormatter": "black",
@@ -21,13 +22,18 @@
     "python.linting.flake8Args": [
         "max-line-length=88 extend-ignore=E203"
     ],
-    "python.languageServer": "Pylance",
-    "latex-workshop.view.pdf.viewer": "tab",
+    "python.languageServer": "Jedi",
+    "python.linting.mypyEnabled": true,
+    "python.experiments.enabled": false,
+    "python.pythonPath": "/Users/snwolf/.pyenv/versions/3.9.9/bin/python",
+    // Shell scripting settings
     "[shellscript]": {
         "editor.tabSize": 2
     },
-    "editor.formatOnSave": true,
     "shellcheck.executablePath": "/usr/local/bin/shellcheck",
     "shellcheck.run": "onSave",
-    "python.linting.mypyEnabled": true
+    // VimL settings
+    "[viml]": {
+        "editor.tabSize": 2
+    }
 }

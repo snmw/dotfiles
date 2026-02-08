@@ -95,6 +95,9 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # pyenv setup
 eval "$(pyenv init -)"
 
+# fzf setup
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 # Machine-specific chezmoi config example:
 # Requires changing this to dot_zshrc.tmpl
 #{{- if eq .chezmoi.hostname "snwolf-laptop" }}
