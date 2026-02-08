@@ -57,16 +57,16 @@
     osid = {{ $osid | quote }}
     signingkey = "6F6A80526F523B89"
 
-{{- /* Determine appropriate command for KeePassXC CLI */ -}}
-{{- $keepassxcCommand := "" -}}
+{{- /* Check if we need to create a wrapper script for KeePassXC flatpak */ -}}
+{{- $needsWrapper := false -}}
 {{- if $useKeepassxc -}}
-{{-     if lookPath "keepassxc-cli" -}}
-{{-         $keepassxcCommand = "keepassxc-cli" -}}
-{{-     else if contains "org.keepassxc.KeePassXC" (output "flatpak" "list" "--columns" "application") -}}
-{{-         $keepassxcCommand = "/usr/bin/env flatpak run --branch=stable --arch=$(uname -m) --command=keepassxc-cli org.keepassxc.KeePassXC" -}}
-{{-     else -}}
-{{-         warnf "KeePassXC CLI not found, please install it to use KeePassXC" -}}
-{{-         $useKeepassxc = false -}}
+{{-     if not (lookPath "keepassxc-cli") -}}
+{{-         if contains "org.keepassxc.KeePassXC" (output "flatpak" "list" "--columns" "application") -}}
+{{-             $needsWrapper = true -}}
+{{-         else -}}
+{{-             warnf "KeePassXC CLI not found, please install it to use KeePassXC" -}}
+{{-             $useKeepassxc = false -}}
+{{-         end -}}
 {{-     end -}}
 {{- end }}
     useKeepassxc = {{ $useKeepassxc }}
@@ -78,7 +78,7 @@
 {{-         $xdgDataHome = printf "%s/.local/share" .chezmoi.homeDir -}}
 {{-     end -}}
 {{-     $defaultDatabase := printf "%s/keepassxc/passwords.kdbx" $xdgDataHome -}}
-{{-     $keepassxcDatabases := dict "personal" "/Users/snwolf/Dropbox/.keepass/personal.kdbx" "work" $defaultDatabase -}}
+{{-     $keepassxcDatabases := dict "personal" "/var/home/simon/dropbox/.keepass/personal.kdbx" "work" $defaultDatabase -}}
 {{- /*  Determine which database to use based on flags */ -}}
 {{-     $activeDatabase := $defaultDatabase -}}
 {{-     if $personal -}}
@@ -87,9 +87,9 @@
 {{-         $activeDatabase = index $keepassxcDatabases "work" -}}
 {{-     end -}}
 
+    keepassxcDatabase = {{ $activeDatabase | quote }}
+
 [keepassxc]
     database = {{ $activeDatabase | quote }}
-    command = {{ $keepassxcCommand | quote }}
-    args = ["--yubikey", "2"]
-    mode = "open"
+    command = "keepassxc-cli"
 {{- end}}
