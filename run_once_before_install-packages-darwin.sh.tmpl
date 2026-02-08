@@ -1,7 +1,9 @@
 {{- if (eq .chezmoi.os "darwin") -}}
 #!/usr/bin/env bash
 
-set -eufo pipefail
+set -eufo pipefai
+
+brew tap homebrew/cask-fontsl
 
 {{ $formulae := list
     "curl"
