@@ -97,8 +97,10 @@ export GOKU_EDN_CONFIG_FILE="${XDG_CONFIG_HOME}/karabiner/karabiner.edn"
 export GCP_PROJECT_CREDENTIALS_PATH="${XDG_CONFIG_HOME}/gcloud/credentials"
 
 # java
+{{- if .work -}}
 ## Setup SDKMAN for Java
 export SDKMAN_DIR="$(brew --prefix sdkman-cli)/libexec"
+{{- end -}}
 # This is for something else...
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="${XDG_CONFIG_HOME}/java"
 
