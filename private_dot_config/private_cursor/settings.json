@@ -18,5 +18,6 @@
     "git.enableCommitSigning": true,
     "redhat.telemetry.enabled": false,
     "ansible.lightspeed.enabled": false,
-    "ansible.lightspeed.suggestions.enabled": false
+    "ansible.lightspeed.suggestions.enabled": false,
+    "git.suggestSmartCommit": false
 }
