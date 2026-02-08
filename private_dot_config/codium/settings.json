@@ -1,17 +1,33 @@
 {
+    // Sets color palette to Drcula theme colors
     "workbench.colorTheme": "Dracula",
+    // Hide the minimap on the right
+    "editor.minimap.enabled": false,
+    // Code folding settings
+    "editor.showFoldingControls": "mouseover",
+    "editor.folding": true,
+    "editor.foldingStrategy": "auto",
+    "editor.formatOnSaveMode": "modificationsIfAvailable",
+    "editor.detectIndentation": false,
+    "editor.cursorBlinking": "smooth",
+    "keyboard.touchbar.enabled": false,
     "[python]": {
-        "editor.defaultFormatter": "ms-python.python"
+        "editor.defaultFormatter": "black",
+        "editor.tabSize": 4
     },
     "python.formatting.provider": "black",
-    "editor.formatOnSaveMode": "modificationsIfAvailable",
+    "python.formatting.blackPath": "black",
     "python.linting.flake8Enabled": true,
     "python.linting.flake8Args": [
         "max-line-length=88 extend-ignore=E203"
     ],
+    "python.languageServer": "Pylance",
     "latex-workshop.view.pdf.viewer": "tab",
-    "editor.detectIndentation": false,
-    "editor.cursorBlinking": "smooth",
-    "keyboard.touchbar.enabled": false,
-    "python.languageServer": "Pylance"
+    "[shellscript]": {
+        "editor.tabSize": 2
+    },
+    "editor.formatOnSave": true,
+    "shellcheck.executablePath": "/usr/local/bin/shellcheck",
+    "shellcheck.run": "onSave",
+    "python.linting.mypyEnabled": true
 }
