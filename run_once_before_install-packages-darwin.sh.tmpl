@@ -18,6 +18,7 @@ set -eufo pipefail
     "mas"
     "pandoc"
     "pyenv"
+    "shellcheck"
     "trash"
     "tree"
     "wget" -}}
@@ -36,6 +37,7 @@ set -eufo pipefail
 {{ if .personal -}}
 {{  $casks = concat $casks (list
         "audacity"
+        "avidemux"
         "brave-browser"
         "digikam"
         "dropbox"
@@ -43,6 +45,7 @@ set -eufo pipefail
         "gimp"
         "inkscape"
         "joplin"
+        "karabiner-elements"
         "keepassxc"
         "macfuse"
         "mendeley"
