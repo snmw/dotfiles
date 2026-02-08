@@ -1,5 +1,15 @@
 # .zshrc
 
+{{ if .work -}}
+###########################################################
+# Direnv Settings                                         #
+###########################################################
+# Initialize direnv before atuin to avoid PROMPT_COMMAND conflicts
+# and carefully to maintain compatability with p10k instant prompt.
+# See https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#how-do-i-initialize-direnv-when-using-instant-prompt
+[ "$(command -v direnv)" ] && (( ${+commands[direnv]} )) && emulate zsh -c"$(direnv export zsh)"
+{{- end -}}
+
 ###########################################################
 # PROMPT SETTINGS                                         #
 ###########################################################
@@ -31,6 +41,11 @@ if [[ "$TERM_PROGRAM" = "vscode" || "$TERM_PROGRAM" = "cursor" ]]; then
 elif [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
+
+{{ if .work -}}
+# Finish initializing direnv for p10k instant prompt compatibility
+[ "$(command -v direnv)" ] && (( ${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
+{{- end -}}
 
 ########################################################
 # Ensure XDG_* variables are set and directories exist #
@@ -182,15 +197,9 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 ###########
 source "${XDG_CONFIG_HOME}/aliases/aliases"
 
-######################
-# Shell integrations #
-######################
-
-{{ if .work -}}
-# direnv
-# Initialize direnv before atuin to avoid PROMPT_COMMAND conflicts
-[ "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
-{{- end -}}
+######################################################
+# Shell integrations and application initializations #
+######################################################
 
 # fzf
 [ "$(command -v fzf)" ] && eval "$(fzf --zsh)"
