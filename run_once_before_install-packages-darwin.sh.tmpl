@@ -27,7 +27,7 @@ set -eufo pipefail
 {{ end -}}
 
 {{ if .personal -}}
-#{{  $formulae = concat $formula (list
+#{{  $formulae = concat $formulae (list
 #        "" -}}
 {{  $casks = concat $casks (list
         "brave-browser"
@@ -36,7 +36,7 @@ set -eufo pipefail
 {{ end -}}
 
 brew bundle --no-lock --file=/dev/stdin <<EOF
-{{ range ($brews | sortAlpha | uniq) -}}
+{{ range ($formulae | sortAlpha | uniq) -}}
 brew "{{ . }}"
 {{ end -}}
 {{ range ($casks | sortAlpha | uniq) -}}
