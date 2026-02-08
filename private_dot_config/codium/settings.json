@@ -36,5 +36,10 @@
     "[viml]": {
         "editor.tabSize": 2
     },
-    "tabnine.experimentalAutoImports": true
+    // TabNine
+    "tabnine.experimentalAutoImports": true,
+    // Terminal settings
+    "terminal.integrated.fontFamily": "Source Code Pro for Powerline",
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "terminal.external.osxExec": "iTerm.app"
 }
