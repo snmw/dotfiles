@@ -10,7 +10,6 @@ set -eufo pipefail
     "homebrew/cask-fonts" -}}
 {{ $formulae := list
     "curl"
-    "homebrew/cask-fonts/font-sauce-code-pro-nerd-font"
     "fzf"
     "gh"
     "git"
@@ -21,6 +20,7 @@ set -eufo pipefail
     "tree"
     "vim" -}}
 {{ $casks := list
+    "homebrew/cask-fonts/font-sauce-code-pro-nerd-font"
     "iterm2" -}}
 
 {{ if eq .chezmoi.arch "amd64" -}}
@@ -47,7 +47,6 @@ set -eufo pipefail
         "karabiner-elements"
         "keepassxc"
         "macfuse"
-        "mas"
         "mendeley"
         "musescore"
         "praat"
