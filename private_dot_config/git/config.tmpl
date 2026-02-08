@@ -1,19 +1,27 @@
 [user]
-	name = "Simon Mitchell-Wolf"
+{{ if .personal -}}
+	name = "snmw"
+	email = "git@morticule.com"
+{{- else if .work -}}
+	name = {{ .name | quote }}
 	email = {{ .email | quote }}
+{{- end }}
 {{ if .signingkey -}}
     signingkey = {{ .signingkey }}
-{{- end }}
+{{- end}}
 [color]
 	ui = true
 [core]
 	editor = nvim
 	autocrlf = input
+	excludesfile = "~/.config/git/exclude"
 [init]
 	defaultbranch = main
-{{- if .personal }}
 [gpg]
-    program = /usr/local/bin/gpg
+{{- if .personal }}
+    program = gpg
+{{- else if .work }}
+    format = ssh
 {{ end -}}
 {{- if .signingkey }}
 [commit]
