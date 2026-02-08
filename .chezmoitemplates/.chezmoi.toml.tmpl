@@ -11,3 +11,8 @@
 
 [data]
   email = {{ $email | quote }}
+
+{{ if eq .chezmoi.hostname "snwolf-laptop" }}
+[keypassxc]
+    database = "/Users/snwolf/Dropbox/.keepass/personal_passwords.kdbx"
+{{- end }}
