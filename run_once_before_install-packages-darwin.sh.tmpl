@@ -27,12 +27,10 @@ set -eufo pipefail
 {{ end -}}
 
 {{ if .personal -}}
-#{{  $formulae = concat $formulae (list
-#        "" -}}
 {{  $casks = concat $casks (list
         "brave-browser"
         "keepassxc"
-        "thunderbird" -}}
+        "thunderbird") -}}
 {{ end -}}
 
 brew bundle --no-lock --file=/dev/stdin <<EOF

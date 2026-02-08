@@ -3,8 +3,8 @@
 
 set -eufo pipefail
 
-extensions=$HOME/.config/codium/extensions.list
-cat extensions.list | grep -v '^#' | xargs -L1 codium --force --install-extension
+extensions="$HOME/.config/codium/extensions.list"
+cat $extensions | grep -v '^#' | xargs -L1 codium --force --install-extension
 
 
 {{ end }}

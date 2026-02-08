@@ -1,7 +1,11 @@
-# This template is run by `chezmoi init` and creates a .chezmoi.toml config file
+{{/* boolean feature tags that may be useful in the future */}}
+{{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
+{{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g., a cloud or VM instance */}}
+{{- $work := false -}}{{/* true if this machine should have work secrets from TBD secret manager */}}
+{{- $personal := false -}}{{/* true if this machine should have personal secrets from KeePassXC */}}
 
-# Prompt user for their email and store it in data
 
+{{/* Prompt user for their email */}}
 {{- $email := "" -}}
 {{- if (hasKey . "email") -}}
 {{-     $email = .email -}}
@@ -9,10 +13,27 @@
 {{-     $email = promptString "email" -}}
 {{- end }}
 
-[data]
-  email = {{ $email | quote }}
+{{/* work around unreliable hostname on darwin */}}
+{{- $hostname := .chezmoi.hostname -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-     $computerName := output "scutil" "--get" "ComputerName" | trim -}}
+{{-     if eq $computerName "snwolf laptop" -}}
+{{-         $hostname = "snwolf-mbp" -}}
+{{/*    else if eq $computerName "Some Other Mac" */}}
+{{/*        $hostname = "that-mac" */}}
+{{-     else -}}
+{{-         $hostname = $computerName -}}
+{{-     end -}}
+{{- end -}}
 
-{{ if eq .chezmoi.hostname "snwolf-laptop" }}
-[keypassxc]
+{{- if eq $hostname "snwolf-mbp" -}}
+{{-     $personal = true -}}
+{{- end -}}
+
+[data]
+    email = {{ $email | quote }}
+    personal = {{ $personal }}
+{{ if $personal -}}
+[keepassxc]
     database = "/Users/snwolf/Dropbox/.keepass/personal_passwords.kdbx"
 {{- end }}
