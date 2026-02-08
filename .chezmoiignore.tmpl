@@ -1,7 +1,11 @@
 README.md
-{{- if ne .chezmoi.os "darwin" }}
+todo/
+{{ if ne .chezmoi.os "darwin" -}}
+{{- /* macOS-specific files */ -}}
 .custom-icons
 .config/karabiner
 .config/iterm2
+Library/
 {{- end }}
 .zcompdump
+.config/Cursor/User/settings.json
