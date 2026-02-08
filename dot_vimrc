@@ -118,7 +118,6 @@ endif
 set cursorline      " Highlight full active line
 
 set showcmd         " Shows current typed command at bottom right
-set cmdheight       " More space for messages
 set noshowmode      " Airline plugin handles mode indicator
 set conceallevel=1  " Used to conceal some keywords as symbols
 

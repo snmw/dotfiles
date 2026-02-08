@@ -35,5 +35,6 @@
     // VimL settings
     "[viml]": {
         "editor.tabSize": 2
-    }
+    },
+    "tabnine.experimentalAutoImports": true
 }
