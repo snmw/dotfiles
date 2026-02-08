@@ -1,33 +1,123 @@
 [user]
-{{ if .personal -}}
+{{- if .personal }}
 	name = "snmw"
 	email = "git@morticule.com"
 {{- else if .work -}}
 	name = {{ .name | quote }}
 	email = {{ .email | quote }}
 {{- end }}
-{{ if .signingkey -}}
+{{- if .signingkey }}
     signingkey = {{ .signingkey }}
 {{- end}}
-[color]
-	ui = true
-[core]
-	editor = nvim
-	autocrlf = input
-	excludesfile = "~/.config/git/exclude"
-[init]
-	defaultbranch = main
+
+[commit]
+{{- if .signingkey }}
+    gpgsign = true
+{{- end }}
+	verbose = true
+
 [gpg]
 {{- if .personal }}
     program = gpg
 {{- else if .work }}
     format = ssh
-{{ end -}}
-{{- if .signingkey }}
-[commit]
-    gpgsign = true
-{{ end -}}
+{{ end }}
+
+[core]
+	editor = nvim
+	excludesfile = "~/.config/git/ignore"
+	autocrlf = input # keep newlines as is
+	whitespace = error # error on whitespace issues
+	compression = 9
+	preloadindex = true # preload index for faster status
+
+[branch]
+	sort = -committerdate
+
+[tag]
+	sort = -taggerdate
+
+[blame]
+	coloring = highlightRecent
+	date = relative
+
+[diff]
+	context = 3 # less context for diffs
+	renames = copies # detect copies as renames
+	interHunkContext = 10 # merge near hunks in diffs
+
+[init]
+	defaultbranch = main
+
+[log]
+	abbrevCommit = true # short commits
+	graphColors = blue,yellow,cyan,magenta,green,red
+
+[status]
+	branch = true
+	short = true
+	showStash = true
+	showUntrackedFiles = all
+
+[pager]
+	branch = false
+	tag = false
+	diff = diff-so-fancy | $PAGER # use diff-so-fancy for diffs
+
+[push]
+	autoSetupRemote = true
+	default = current
+	followTags = true
+
 [pull]
-	rebase = false
+	rebase = true
+	default = current
+
+[rebase]
+	autoStash = true
+	missingCommitsCheck = warn
+
+[submodule]
+	fetchJobs = 16
+
+# Colors
+[color]
+	ui = true
+
+[color "blame"]
+	highlightRecent = black bold,1 year ago,white,1 month ago,default,7 days ago,blue
+
+[color "branch"]
+	current = magenta
+	local = default
+	remote = yellow
+	upstream = green
+	plain = blue
+
+[color "diff"]
+	meta = black bold
+	frag = magenta
+	context = white
+	whitespace = yellow reverse
+	old = red
+
+[color.decorate]
+	HEAD = red
+	branch = blue
+	tag = yellow
+	remoteBranch = magenta
+
+[interactive]
+	diffFilter = diff-so-fancy --patch
+
+# Aliases
 [alias]
 	fpush = push --force-with-lease
+
+# URL shortcuts
+[url "git@github.com:"]
+	insteadOf = "gh:"
+
+# Third-party tools
+[diff-so-fancy]
+	markEmptyLines = false
