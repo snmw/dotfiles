@@ -1,0 +1,31 @@
+set nocompatible    " be iMproved, required
+filetype off        " required
+
+" Testing chezmoi
+" Set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim' " Let Vundle manage Vim, required
+
+" ----- Plugins
+Plugin 'dracula/vim',{'name':'dracula'}
+" All plugins must be added before the following line
+call vundle#end()           "required
+filetype plugin indent on   "required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+
+set number
+set tabstop=4
+set expandtab		"Use softtabstop spaces instead of tab characters for indentation
+set shiftwidth=4	"Indent by 4 spaces whne using >>, <<, ==, etc.
+set softtabstop=4	"Indent by 4 spaces when pressing <TAB>
+
+set autoindent		"Keep indentation from previous line
+set smartindent		"Automatically inserts indentation in some cases
+set cindent		    "Like smartindent, but stricter and more customizable
+
+set mouse=a
+
+syntax on
+colorscheme dracula
