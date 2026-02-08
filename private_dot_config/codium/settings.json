@@ -7,6 +7,10 @@
     "editor.showFoldingControls": "mouseover",
     "editor.folding": true,
     "editor.foldingStrategy": "auto",
+    // Font settings
+    "editor.fontFamily": "SauceCodePro Nerd Font Mono",
+    "editor.fontSize": 14,
+    // General formatting/linting
     "editor.formatOnSaveMode": "modificationsIfAvailable",
     "editor.detectIndentation": false,
     "editor.cursorBlinking": "smooth",
@@ -39,9 +43,7 @@
     // TabNine
     "tabnine.experimentalAutoImports": true,
     // Terminal settings
-    "terminal.integrated.fontFamily": "Source Code Pro for Powerline",
+    "terminal.integrated.fontFamily": "SauceCodePro Nerd Font Mono",
     "terminal.integrated.defaultProfile.osx": "zsh",
     "terminal.external.osxExec": "iTerm.app",
-    "editor.fontFamily": "'SauceCodePro Nerd Font Mono'",
-    "editor.fontSize": 14
 }
