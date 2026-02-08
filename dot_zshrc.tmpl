@@ -73,7 +73,6 @@ HIST_STAMPS="yyyy-mm-dd"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     common-aliases
-    sudo
     zsh-syntax-highlighting
 )
 
@@ -95,6 +94,9 @@ export DRACULA_ARROW_ICON=""
 export ZSH_THEME_GIT_PROMPT_CLEAN=") %F{green}%B "
 export ZSH_THEME_GIT_PROMPT_DIRTY=") %F{yellow}%B "
 export ZSH_THEME_GIT_PROMPT_PREFIX="%F{cyan}%B( "
+
+# Vi keybindings
+bindkey -v
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
