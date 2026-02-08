@@ -40,17 +40,20 @@ set -eufo pipefail
         "dropbox"
         "expressvpn"
         "gimp"
-        "google-chrome"
         "inkscape"
         "keepassxc"
+        "macfuse"
         "mendeley"
         "musescore"
         "praat"
         "skype"
         "spotify"
         "thunderbird"
+        "veracrypt"
         "zoom") -}}
 {{ end -}}
+
+# Need to symlink /Applications/VeraCrypt.app/Contents/MacOS/VeraCrypt to /usr/local/bin/veracrypt after install
 
 brew bundle --no-lock --file=/dev/stdin <<EOF
 {{ range ($formulae | sortAlpha | uniq) -}}
