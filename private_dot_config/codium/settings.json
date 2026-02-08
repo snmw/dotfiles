@@ -1,0 +1,16 @@
+{
+    "workbench.colorTheme": "Dracula",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python"
+    },
+    "python.formatting.provider": "black",
+    "editor.formatOnSaveMode": "modificationsIfAvailable",
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Args": [
+        "max-line-length=88 extend-ignore=E203"
+    ],
+    "latex-workshop.view.pdf.viewer": "tab",
+    "editor.detectIndentation": false,
+    "editor.cursorBlinking": "smooth",
+    "keyboard.touchbar.enabled": false
+}
