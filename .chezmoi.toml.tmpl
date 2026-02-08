@@ -35,5 +35,6 @@
     personal = {{ $personal }}
 {{ if $personal -}}
 [keepassxc]
+    command = "keepassxc-cli"
     database = "/Users/snwolf/Dropbox/.keepass/personal_passwords.kdbx"
 {{- end }}
