@@ -1,7 +1,7 @@
 {{- if (eq .chezmoi.os "darwin") -}}
 #!/usr/bin/env bash
 
-set -eufo pipefai
+set -eufo pipefail
 
 {{ $taps := list
     "homebrew/core"
