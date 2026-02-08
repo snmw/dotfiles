@@ -1,13 +1,20 @@
 README.md
 todo/
-{{ if ne .chezmoi.os "darwin" -}}
-{{- /* macOS-specific files */ -}}
+{{/* macOS-specific files */ -}}
+{{- if ne .chezmoi.os "darwin" -}}
 .custom-icons
 .config/karabiner
 .config/iterm2
 Library/
 {{- end }}
+
+{{/* Linux-specific files */ -}}
+{{- if ne .chezmoi.os "linux" -}}
+.config/Cursor/User/
+{{- end }}
+
 .zcompdump
-{{/* Externally modified files */}}
-.config/Cursor/User/settings.json
+{{/* Externally modified files */ -}}
+{{- /* All files in .cursor are managed by Cursor */ -}}
+.cursor/
 .config/ssh/known_hosts

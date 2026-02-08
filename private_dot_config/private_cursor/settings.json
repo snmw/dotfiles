@@ -15,5 +15,8 @@
         "markdown": false,
         "scminput": false
     },
-    "git.enableCommitSigning": true
+    "git.enableCommitSigning": true,
+    "redhat.telemetry.enabled": false,
+    "ansible.lightspeed.enabled": false,
+    "ansible.lightspeed.suggestions.enabled": false
 }
