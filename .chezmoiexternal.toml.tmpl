@@ -3,8 +3,13 @@
 {{-   if eq .chezmoi.os "darwin" }}
 {{-     $fontDir = "~/Library/Fonts" }}
 {{-   else if eq .chezmoi.os "linux" }}
-{{-     $fontDir = "/usr/share/fonts/truetype" }}
+{{-     $xdgDataHome := env "XDG_DATA_HOME" -}}
+{{-     if not $xdgDataHome -}}
+{{-         $xdgDataHome = printf "%s/.local/share" .chezmoi.homeDir -}}
+{{-     end -}}
+{{-     $fontDir = printf "%s/fonts/truetype" $xdgDataHome -}}
 {{-   end }}
+
 ["{{ $fontDir }}/Sauce Code Pro Mono Regular.ttf"]
     type = "file"
     url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCodePro/Regular/complete/Sauce Code Pro Nerd Font Complete Mono.ttf"
