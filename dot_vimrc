@@ -178,7 +178,6 @@ endif
 """"""""""""""
 so ~/.vim/plugins.vim
 so ~/.vim/plugin-config.vim
-so ~/.vim/autoclose.vim
 
 
 """""""""""""""""""
