@@ -119,3 +119,19 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 # pyenv setup
 eval "$(pyenv init -)"
+
+# Machine-specific chezmoi config example:
+# Requires changing this to dot_zshrc.tmpl
+#{{- if eq .chezmoi.hostname "snwolf-laptop" }}
+# This will only be included in ~/.zshrc on snwolf-laptop
+#{{- end }}
+
+
+# OS-specific chezmoi config:
+# Also requires a template
+#{{ if eq .chezmoi.os "darwin" -}}
+#macOS stuff here
+#{{ else if eq .chezmoi.os "linux" -}}
+#Linux stuff here
+#{{ end -}}
+

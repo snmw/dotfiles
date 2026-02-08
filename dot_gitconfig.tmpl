@@ -1,0 +1,14 @@
+[user]
+	name = Simon Wolf
+	email = {{ .email | quote }}
+[color]
+	ui = true
+[core]
+	editor = vim
+	autocrlf = input
+[init]
+	defaultBranch = main
+[credential "https://github.com"]
+	helper = !/usr/local/bin/gh auth git-credential
+[pull]
+	rebase = false
