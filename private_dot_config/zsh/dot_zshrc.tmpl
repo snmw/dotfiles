@@ -215,6 +215,17 @@ source "${XDG_CONFIG_HOME}/aliases/aliases"
 # iterm2
 [ -e "${XDG_CONFIG_HOME}/iterm2/iterm2_shell_integration.zsh" ] && source "${XDG_CONFIG_HOME}/iterm2/iterm2_shell_integration.zsh"
 {{- end -}}
+
+# Google Cloud CLI
+## Update PATH for the gcloud SDK
+if [[ -f "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc" ]]; then
+  source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
+fi
+## If you want to use the autocomplete features:
+if [[ -f "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc" ]]; then
+  source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
+fi
+
 {{ if .work -}}
 # SDKMAN for Java
 [[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
