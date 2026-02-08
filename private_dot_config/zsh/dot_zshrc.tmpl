@@ -1,12 +1,34 @@
 # .zshrc
 
-################################################################################
-# Enable Powerlevel10k instant prompt. Should stay close to the top of .zshrc. #
-# ---------------------------------------------------------------------------- #
-# Initialization code that may require console input (password prompts, [y/n]  #
-# confirmations, etc.) must go above this block; everything else may go below. #
-################################################################################
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+###########################################################
+# PROMPT SETTINGS                                         #
+###########################################################
+
+###########################################################
+# VS Code and Cursor Prompt Settings                      #
+# ------------------------------------------------------- #
+# User a simpler prompt for VS Code and Cursor to avoid   #
+# confusing the agent.                                    #
+# If future config should change for JetBrains IDEs,      #
+# add a check like:                                       #
+#     "$TERMINAL_EMULATOR" = "JetBrains-JediTerm" || ...  #
+###########################################################
+export AGENT_FRIENDLY_PROMPT=false
+if [[ "$TERM_PROGRAM" = "vscode" || "$TERM_PROGRAM" = "cursor" ]]; then
+  AGENT_FRIENDLY_PROMPT=true
+  export ZSH_THEME=''
+  export PROMPT='%n@%m:%~%# '
+  export RPROMPT=''
+
+###########################################################
+# Enable Powerlevel10k instant prompt.                    #
+# ------------------------------------------------------- #
+# Should stay close to the top of .zshrc.                 #
+# Initialization code that may require console input      #
+# (password prompts, [y/n] confirmations, etc.) must go   #
+# above this block; everything else may go below.         #
+###########################################################
+elif [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
@@ -24,6 +46,9 @@ xdg_dirs=(
 for dir in "${xdg_dirs[@]}"; do
   [ -n "${dir}" ] && mkdir -p "${dir}"
 done
+
+# Ensure ZSH state directory exists
+[ -n "${XDG_STATE_HOME}/zsh" ] && mkdir -p "${XDG_STATE_HOME}/zsh"
 
 ########################################################################
 # ENV SETTINGS                                                         #
@@ -44,7 +69,7 @@ export DOTNET_CLI_HOME="${XDG_DATA_HOME}/dotnet"
 
 # gnupg
 export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
-GPG_TTY="$(tty)" && export GPG_TTY
+GPG_TTY="${TTY}" && export GPG_TTY
 
 # go
 export GOPATH="${XDG_DATA_HOME}/go"
@@ -115,8 +140,10 @@ fi
 
 source "${ZINIT_HOME}/zinit.zsh"
 
-# Add powerlevel10k prompt
-zinit ice depth=1; zinit light romkatv/powerlevel10k
+if [[ "$AGENT_FRIENDLY_PROMPT" = false ]]; then
+  # Add powerlevel10k prompt
+  zinit ice depth=1; zinit light romkatv/powerlevel10k
+fi
 
 # Add additional plugins
 # Autosuggestions
@@ -126,7 +153,7 @@ zinit light zsh-users/zsh-syntax-highlighting
 # Completions
 zinit light zsh-users/zsh-completions
 # Make sure zsh can find completions from homebrew
-if type brew &>/dev/null; then
+if command -v brew &>/dev/null; then
     FPATH="$(brew --prefix)/share/zsh-completions:$FPATH"
 fi
 autoload -Uz compinit
@@ -159,16 +186,18 @@ source "${XDG_CONFIG_HOME}/aliases/aliases"
 # Shell integrations #
 ######################
 
+{{ if .work -}}
 # direnv
 # Initialize direnv before atuin to avoid PROMPT_COMMAND conflicts
-# [ "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
+[ "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
+{{- end -}}
 
 # fzf
 [ "$(command -v fzf)" ] && eval "$(fzf --zsh)"
 # for vimrc: set rtp+=/opt/homebrew/opt/fzf
 
 # homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+[ "$(command -v brew)" ] && eval "$("$(brew --prefix)"/bin/brew shellenv)"
 
 {{ if eq .chezmoi.os "darwin" -}}
 # iterm2
@@ -180,8 +209,10 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # atuin
 # atuin allows these flags: "--disable-up-arrow" and/or "--disable-ctrl-r"
-ATUIN_INIT_FLAGS="--disable-up-arrow --disable-ctrl-r"
-[ "$(command -v atuin)" ] && eval "$(atuin init zsh ${ATUIN_INIT_FLAGS})"/
+ATUIN_INIT_FLAGS=(--disable-up-arrow --disable-ctrl-r)
+[ "$(command -v atuin)" ] && eval "$(atuin init zsh "${ATUIN_INIT_FLAGS[@]}")"
 
-# To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
-[[ ! -f "${XDG_CONFIG_HOME}/zsh/.p10k.zsh" ]] || source "${XDG_CONFIG_HOME}/zsh/.p10k.zsh"
+if [[ "$AGENT_FRIENDLY_PROMPT" = false ]]; then
+  # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
+  [[ ! -f "${XDG_CONFIG_HOME}/zsh/.p10k.zsh" ]] || source "${XDG_CONFIG_HOME}/zsh/.p10k.zsh"
+fi
