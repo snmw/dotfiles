@@ -3,14 +3,18 @@
 
 set -eufo pipefai
 
-brew tap homebrew/cask-fontsl
-
+{{ $taps := list
+    "homebrew/core"
+    "homebrew/bundle"
+    "homebrew/cask"
+    "homebrew/cask-fonts" -}}
 {{ $formulae := list
     "curl"
     "dockutil"
     "ffmpeg"
     "gh"
     "git"
+    "mas"
     "pandoc"
     "pyenv"
     "trash"
