@@ -41,5 +41,7 @@
     // Terminal settings
     "terminal.integrated.fontFamily": "Source Code Pro for Powerline",
     "terminal.integrated.defaultProfile.osx": "zsh",
-    "terminal.external.osxExec": "iTerm.app"
+    "terminal.external.osxExec": "iTerm.app",
+    "editor.fontFamily": "'SauceCodePro Nerd Font Mono'",
+    "editor.fontSize": 14
 }
