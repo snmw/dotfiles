@@ -3,24 +3,8 @@
 
 set -eufo pipefail
 
-extensions=(
-        DavidAnson.vscode-markdownlint
-        dracula-theme.theme-dracula
-        James-Yu.latex-workshop
-        lonefy.vscode-JS-CSS-HTML-formatter
-        matangover.mypy
-        ms-python.python
-        ms-python.vscode-pylance
-        ms-toolsai.jupyter
-        ms-toolsai.jupyter-keymap
-        shd101wyy.markdown-preview-enhanced
-        timonwong.shellcheck
-        yzhang.markdown-all-in-one
-)
-
-for extension in ${extensions[@]}; do
-    codium --force --install-extension $extension
-done
+extensions=$HOME/.config/codium/extensions.list
+cat extensions.list | grep -v '^#' | xargs -L1 codium --force --install-extension
 
 
 {{ end }}
