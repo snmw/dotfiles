@@ -1,0 +1,46 @@
+{{- if (eq .chezmoi.os "darwin") -}}
+#!/usr/bin/env bash
+
+set -eufo pipefail
+
+{{ $formulae := list
+    "curl"
+    "dockutil"
+    "ffmpeg"
+    "gh"
+    "git"
+    "pandoc"
+    "pyenv"
+    "trash"
+    "tree"
+    "wget" -}}
+{{ $casks := list
+    "iterm2"
+    "vlc"
+    "vscodium" -}}
+
+{{ if eq .chezmoi.arch "amd64" -}}
+{{  $formulae = concat $formulae (list
+        "shellcheck") -}}
+{{  $casks = concat $casks (list
+        "virtualbox") -}}
+{{ end -}}
+
+{{ if .personal -}}
+#{{  $formulae = concat $formula (list
+#        "" -}}
+{{  $casks = concat $casks (list
+        "brave-browser"
+        "keepassxc"
+        "thunderbird" -}}
+{{ end -}}
+
+brew bundle --no-lock --file=/dev/stdin <<EOF
+{{ range ($brews | sortAlpha | uniq) -}}
+brew "{{ . }}"
+{{ end -}}
+{{ range ($casks | sortAlpha | uniq) -}}
+cask "{{ . }}"
+{{ end -}}
+EOF
+{{ end -}}
