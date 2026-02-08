@@ -1,19 +1,21 @@
-set nocompatible    " be iMproved, required
-filetype off        " required
+" Install vim-plug if not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
 
-" Testing chezmoi
-" Set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'VundleVim/Vundle.vim' " Let Vundle manage Vim, required
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source ~/.vimrc
+\| endif
 
-" ----- Plugins
-Plugin 'dracula/vim',{'name':'dracula'}
-" All plugins must be added before the following line
-call vundle#end()           "required
-filetype plugin indent on   "required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
+" Plugins
+call plug#begin('~/.vim/plugged')
+
+Plug 'dracula/vim', { 'as': 'dracula' }
+
+call plug#end()
+
 
 set number
 set tabstop=4
