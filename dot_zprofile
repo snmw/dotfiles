@@ -1,2 +1,0 @@
-# pyenv setup
-eval "$(pyenv init --path)"
