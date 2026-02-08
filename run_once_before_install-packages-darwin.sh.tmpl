@@ -34,9 +34,20 @@ set -eufo pipefail
 
 {{ if .personal -}}
 {{  $casks = concat $casks (list
+        "audacity"
         "brave-browser"
+        "dropbox"
+        "expressvpn"
+        "gimp"
+        "google-chrome"
         "keepassxc"
-        "thunderbird") -}}
+        "mendeley"
+        "musescore"
+        "praat"
+        "skype"
+        "spotify"
+        "thunderbird"
+        "zoom") -}}
 {{ end -}}
 
 brew bundle --no-lock --file=/dev/stdin <<EOF
