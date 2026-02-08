@@ -1,0 +1,53 @@
+# System preferences
+# Set commands for editors in order of preference
+editors=("nvim" "vim")
+visual_editors=("cursor" "code" "nvim")
+
+# Set editor vars in preference order
+# Try to default to `vim`, fallback to `vi`:
+if hash vim 2>/dev/null; then
+    export EDITOR="$(command -v vim)"
+    export VISUAL="$(command -v vim)"
+elif hash vi 2>/dev/null; then
+    export EDITOR="$(command -v vi)"
+    export VISUAL="$(command -v vi)"
+fi
+
+# Try to overwrite editor values in order of preference
+for editor in "${editors[@]}"; do
+    if hash "$editor" 2>/dev/null; then
+        editor_path=$(command -v "${editor}")
+        export EDITOR="$editor_path"
+        break
+    fi
+done
+
+for visual_editor in "${visual_editors[@]}"; do
+    if hash "${visual_editor}" 2>/dev/null; then
+        visual_path=$(command -v "${visual_editor}")
+        export VISUAL="${visual_path}"
+        break
+    fi
+done
+
+# XDG path configurations
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_BIN_HOME="${HOME}/.local/bin"
+export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_STATE_HOME="${HOME}/.local/state"
+{{ if eq .chezmoi.os "darwin" -}}
+export XDG_CACHE_HOME="${HOME}/Library/Caches"
+export XDG_RUNTIME_DIR="${TMPDIR}/runtime-${UID}"
+{{ end -}}
+{{ if eq .chezmoi.os "linux" -}}
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_RUNTIME_DIR="/run/user/${UID}"
+{{ end -}}
+
+
+# PATH modifications
+export PATH="${XDG_BIN_HOME}:${PATH}"
+
+
+# Additional shell config
+export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
