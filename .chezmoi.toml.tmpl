@@ -1,7 +1,7 @@
-{{/* boolean feature tags that may be useful in the future */}}
+{{/* Boolean feature tags that may be useful in the future */}}
 {{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
 {{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g., a cloud or VM instance */}}
-{{- $work := false -}}{{/* true if this machine should have work secrets from TBD secret manager */}}
+{{- $work := false -}}{{/* true if this machine should have work secrets from KeePassXC */}}
 {{- $personal := false -}}{{/* true if this machine should have personal secrets from KeePassXC */}}
 
 {{/* Prompt user for their email */}}
@@ -12,14 +12,14 @@
 {{-     $email = promptString "email" -}}
 {{- end }}
 
-{{/* work around unreliable hostname on darwin */}}
+{{/* Work around unreliable hostname on darwin */}}
 {{- $hostname := .chezmoi.hostname -}}
 {{- if eq .chezmoi.os "darwin" -}}
 {{-     $computerName := output "scutil" "--get" "ComputerName" | trim -}}
-{{-     if eq $computerName "snwolf laptop" -}}
+{{-     if eq $computerName "snwolf-mbp" -}}
 {{-         $hostname = "snwolf-mbp" -}}
-{{/*    else if eq $computerName "Some Other Mac" */}}
-{{/*        $hostname = "that-mac" */}}
+{{-     else if eq $computerName "LM-SJN-40018453" -}}
+{{-         $hostname = "work-mbp" -}}
 {{-     else -}}
 {{-         $hostname = $computerName -}}
 {{-     end -}}
@@ -27,13 +27,19 @@
 
 {{- if eq $hostname "snwolf-mbp" -}}
 {{-     $personal = true -}}
+{{- else if eq $hostname "work-mbp" -}}
+{{-     $work = true -}}
 {{- end -}}
 
 [data]
     email = {{ $email | quote }}
     personal = {{ $personal }}
-{{ if $personal -}}
+    work = {{ $work }}
 [keepassxc]
     command = "keepassxc-cli"
+{{ if $personal -}}
     database = "/Users/snwolf/Dropbox/.keepass/personal_passwords.kdbx"
+{{- end }}
+{{ if $work -}}
+    database = "/Users/simwolf/OneDrive/.keepass/paypal_passwords.kdbx"
 {{- end }}

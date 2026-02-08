@@ -10,33 +10,30 @@ set -eufo pipefail
     "homebrew/cask-fonts" -}}
 {{ $formulae := list
     "curl"
-    "dockutil"
-    "ffmpeg"
+    "homebrew/cask-fonts/font-sauce-code-pro-nerd-font"
     "fzf"
     "gh"
     "git"
     "gnupg"
-    "mas"
     "pandoc"
     "pyenv"
-    "shellcheck"
     "trash"
     "tree"
-    "vim"
-    "wget" -}}
+    "vim" -}}
 {{ $casks := list
-    "iterm2"
-    "vlc"
-    "vscodium" -}}
+    "iterm2" -}}
 
 {{ if eq .chezmoi.arch "amd64" -}}
 {{  $formulae = concat $formulae (list
         "shellcheck") -}}
-{{  $casks = concat $casks (list
-        "virtualbox") -}}
 {{ end -}}
 
 {{ if .personal -}}
+{{  $formulae = concat $formulae (list
+        "dockutil"
+        "ffmpeg"
+        "mas"
+        "wget") -}}
 {{  $casks = concat $casks (list
         "audacity"
         "avidemux"
@@ -44,13 +41,13 @@ set -eufo pipefail
         "digikam"
         "dropbox"
         "firefox"
-        "homebrew/cask-fonts/font-sauce-code-pro-nerd-font"
         "gimp"
         "inkscape"
         "joplin"
         "karabiner-elements"
         "keepassxc"
         "macfuse"
+        "mas"
         "mendeley"
         "musescore"
         "praat"
@@ -60,10 +57,21 @@ set -eufo pipefail
         "thunderbird"
         "tor-browser"
         "veracrypt"
+        "virtualbox"
+        "vlc"
+        "vscodium"
         "zoom") -}}
 {{ end -}}
 
 # Need to symlink /Applications/VeraCrypt.app/Contents/MacOS/VeraCrypt to /usr/local/bin/veracrypt after install
+
+{{ if .work -}}
+{{  $formulae = concat $formulae (list
+        "jq") -}}
+{{  $casks = concat $casks (list
+        "visual-studio-code") -}}
+{{ end -}}
+
 
 brew bundle --no-lock --file=/dev/stdin <<EOF
 {{ range ($formulae | sortAlpha | uniq) -}}
