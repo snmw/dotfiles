@@ -4,7 +4,6 @@
 {{- $work := false -}}{{/* true if this machine should have work secrets from TBD secret manager */}}
 {{- $personal := false -}}{{/* true if this machine should have personal secrets from KeePassXC */}}
 
-
 {{/* Prompt user for their email */}}
 {{- $email := "" -}}
 {{- if (hasKey . "email") -}}

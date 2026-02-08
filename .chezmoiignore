@@ -3,4 +3,5 @@ README.md
 .config/codium
 {{- if ne .chezmoi.os "darwin" }}
 .custom-icons
+.config/karabiner
 {{- end }}
